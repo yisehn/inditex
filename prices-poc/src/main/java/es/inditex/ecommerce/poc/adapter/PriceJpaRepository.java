@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.ports;
+package es.inditex.ecommerce.poc.adapter;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.inditex.ecommerce.poc.entities.PersistencePrice;
+import es.inditex.ecommerce.poc.entity.PriceJpa;
 
 @Repository
-public interface PriceRepository extends JpaRepository<PersistencePrice, Long> {
+public interface PriceJpaRepository extends JpaRepository<PriceJpa, Long> {
 
-  List<PersistencePrice> findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(String productId,
+  List<PriceJpa> findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(String productId,
       String brandId, Timestamp startDate, Timestamp endDate);
 
 }

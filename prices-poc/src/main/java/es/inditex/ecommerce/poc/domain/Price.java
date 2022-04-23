@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.model;
+package es.inditex.ecommerce.poc.domain;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +16,8 @@ public class Price {
   String productId;
   String brandId;
   String priceList;
-  float finalPrice;
-  LocalDateTime initialDate;
+  Float finalPrice;
+  private Integer priority;
+  LocalDateTime startDate;
   LocalDateTime endDate;
 }

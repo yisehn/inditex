@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.handlers;
+package es.inditex.ecommerce.poc.handler;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,11 +6,8 @@ import lombok.Data;
 @Data
 @Builder
 public class ApiError {
-
   String timestamp;
-  String status;
   String error;
   String message;
   String path;
-
 }

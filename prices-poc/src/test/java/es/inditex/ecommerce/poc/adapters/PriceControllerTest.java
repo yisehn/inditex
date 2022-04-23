@@ -25,8 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import es.inditex.ecommerce.poc.model.Price;
-import es.inditex.ecommerce.poc.ports.PriceService;
+import es.inditex.ecommerce.poc.domain.Price;
+import es.inditex.ecommerce.poc.port.PriceService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,8 +46,9 @@ class PriceControllerTest {
   void whenExpectedParametersThenReturnOk(String applicationDate, String prodID, String brandID,
       String expectedPriceList, float expectedPrice) throws Exception {
 
-    when(priceServiceImpl.getPriceInfoByDateProductAndBrand(LocalDateTime.parse(applicationDate), prodID, brandID))
-        .thenReturn(Optional.of(Price.builder().priceList(expectedPriceList).finalPrice(expectedPrice).build()));
+    when(
+        priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.parse(applicationDate), prodID, brandID))
+            .thenReturn(Optional.of(Price.builder().priceList(expectedPriceList).finalPrice(expectedPrice).build()));
 
     MvcResult mvcResult = mockMvc.perform(get("/v1/ecommerce/prices").param("application_date", applicationDate)
         .param("product_id", prodID).param("brand_id", brandID)).andDo(print()).andExpect(status().isOk()).andReturn();
@@ -65,13 +66,29 @@ class PriceControllerTest {
   @Test
   void whenBrandDoesNotExistThenReturnNotFound() {
     try {
-      when(priceServiceImpl.getPriceInfoByDateProductAndBrand(Mockito.any(LocalDateTime.class), Mockito.anyString(),
-          Mockito.anyString())).thenReturn(Optional.empty());
+      when(priceServiceImpl.getApplicatedPriceByDateProductAndBrand(Mockito.any(LocalDateTime.class),
+          Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.empty());
 
       mockMvc
           .perform(get("/v1/ecommerce/prices").param("application_date", "2020-06-15T10:21:55")
               .param("product_id", "35455").param("brand_id", "2"))
           .andDo(print()).andExpect(status().isNotFound()).andReturn();
+
+    } catch (Exception exc) {
+      fail();
+    }
+  }
+
+  @Test
+  void whenRuntimeExceptionThenInternalServerError() {
+    try {
+      when(priceServiceImpl.getApplicatedPriceByDateProductAndBrand(Mockito.any(LocalDateTime.class),
+          Mockito.anyString(), Mockito.anyString())).thenThrow(NullPointerException.class);
+
+      mockMvc
+          .perform(get("/v1/ecommerce/prices").param("application_date", "2020-06-15T10:21:55")
+              .param("product_id", "35455").param("brand_id", "2"))
+          .andDo(print()).andExpect(status().isInternalServerError()).andReturn();
 
     } catch (Exception exc) {
       fail();

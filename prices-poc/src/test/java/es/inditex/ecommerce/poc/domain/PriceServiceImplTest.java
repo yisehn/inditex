@@ -1,12 +1,10 @@
-package es.inditex.ecommerce.poc.services;
+package es.inditex.ecommerce.poc.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,9 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import es.inditex.ecommerce.poc.entities.PersistencePrice;
-import es.inditex.ecommerce.poc.model.Price;
-import es.inditex.ecommerce.poc.ports.PriceRepository;
+import es.inditex.ecommerce.poc.port.PriceRepository;
 
 @SpringBootTest
 class PriceServiceImplTest {
@@ -39,11 +35,10 @@ class PriceServiceImplTest {
   @Test
   void whenAnyRowMatchThenReturnAnEmptyValue() {
     try {
-      when(priceRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
-          Mockito.anyString(), Mockito.anyString(), Mockito.any(Timestamp.class), Mockito.any(Timestamp.class)))
-              .thenReturn(Collections.emptyList());
+      when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
+          Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(Collections.emptyList());
 
-      Optional<Price> price = priceServiceImpl.getPriceInfoByDateProductAndBrand(LocalDateTime.now(), "productId",
+      Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
           "brandId");
       assertTrue(!price.isPresent());
 
@@ -54,36 +49,33 @@ class PriceServiceImplTest {
 
   @Test
   void whenMoreThanOneRowMatchThenReturnTheHigherPriorityElement() {
-    List<PersistencePrice> persistencePrices = new ArrayList<PersistencePrice>();
-    Instant now = Instant.now();
-    Instant now1 = Instant.now();
+    List<Price> prices = new ArrayList<Price>();
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime now1 = LocalDateTime.now();
 
-    persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("1")).brandId("brandId")
-        .startDate(Timestamp.from(now)).endDate(Timestamp.from(now)).priceList("priceList").productId("productId")
-        .priority(1).price(Float.valueOf("1")).curr("EUR").build());
+    prices.add(Price.builder().brandId("brandId").startDate(now).endDate(now).priceList("priceList")
+        .productId("productId").priority(1).finalPrice(Float.valueOf("1")).build());
 
-    persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("2")).brandId("brandId")
-        .startDate(Timestamp.from(now1)).endDate(Timestamp.from(now1)).priceList("priceList1").productId("productId")
-        .priority(2).price(Float.valueOf("2")).curr("EUR").build());
+    prices.add(Price.builder().brandId("brandId").startDate(now1).endDate(now1).priceList("priceList1")
+        .productId("productId").priority(2).finalPrice(Float.valueOf("2")).build());
 
-    persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("3")).brandId("brandId")
-        .startDate(Timestamp.from(now1)).endDate(Timestamp.from(now1)).priceList("priceList3").productId("productId")
-        .priority(1).price(Float.valueOf("3")).curr("EUR").build());
+    prices.add(Price.builder().brandId("brandId").startDate(LocalDateTime.now()).endDate(LocalDateTime.now())
+        .priceList("priceList3").productId("productId").priority(1).finalPrice(Float.valueOf("3")).build());
 
-    when(priceRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
-        Mockito.anyString(), Mockito.anyString(), Mockito.any(Timestamp.class), Mockito.any(Timestamp.class)))
-            .thenReturn(persistencePrices);
+    when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
+        Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(prices);
 
-    Optional<Price> price = priceServiceImpl.getPriceInfoByDateProductAndBrand(LocalDateTime.now(), "productId",
+    Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
         "brandId");
     assertTrue(price.isPresent());
 
     assertEquals("brandId", price.get().getBrandId());
-    assertEquals(Timestamp.from(now1).toLocalDateTime(), price.get().getEndDate());
-    assertEquals(Timestamp.from(now1).toLocalDateTime(), price.get().getInitialDate());
+    assertEquals(now1, price.get().getEndDate());
+    assertEquals(now1, price.get().getStartDate());
     assertEquals(Float.valueOf("2"), price.get().getFinalPrice());
     assertEquals("priceList1", price.get().getPriceList());
     assertEquals("productId", price.get().getProductId());
+    assertEquals(2, price.get().getPriority());
 
     try {
     } catch (Exception exc) {
@@ -93,36 +85,33 @@ class PriceServiceImplTest {
 
   @Test
   void whenMoreThanOneRowMatchThenReturnTheFirsRecoveredtHigherPriorityElement() {
-    List<PersistencePrice> persistencePrices = new ArrayList<PersistencePrice>();
-    Instant now = Instant.now();
-    Instant now1 = Instant.now();
+    List<Price> prices = new ArrayList<Price>();
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime now1 = LocalDateTime.now();
 
-    persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("1")).brandId("brandId")
-        .startDate(Timestamp.from(now)).endDate(Timestamp.from(now)).priceList("priceList").productId("productId")
-        .priority(1).price(Float.valueOf("1")).curr("EUR").build());
+    prices.add(Price.builder().brandId("brandId").startDate(now).endDate(now).priceList("priceList")
+        .productId("productId").priority(1).finalPrice(Float.valueOf("1")).build());
 
-    persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("2")).brandId("brandId")
-        .startDate(Timestamp.from(now1)).endDate(Timestamp.from(now1)).priceList("priceList1").productId("productId")
-        .priority(2).price(Float.valueOf("2")).curr("EUR").build());
+    prices.add(Price.builder().brandId("brandId").startDate(now1).endDate(now1).priceList("priceList1")
+        .productId("productId").priority(2).finalPrice(Float.valueOf("2")).build());
 
-    persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("3")).brandId("brandId")
-        .startDate(Timestamp.from(now1)).endDate(Timestamp.from(now1)).priceList("priceList3").productId("productId")
-        .priority(2).price(Float.valueOf("3")).curr("EUR").build());
+    prices.add(Price.builder().brandId("brandId").startDate(now1).endDate(now1).priceList("priceList3")
+        .productId("productId").priority(2).finalPrice(Float.valueOf("3")).build());
 
-    when(priceRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
-        Mockito.anyString(), Mockito.anyString(), Mockito.any(Timestamp.class), Mockito.any(Timestamp.class)))
-            .thenReturn(persistencePrices);
+    when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
+        Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(prices);
 
-    Optional<Price> price = priceServiceImpl.getPriceInfoByDateProductAndBrand(LocalDateTime.now(), "productId",
+    Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
         "brandId");
     assertTrue(price.isPresent());
 
     assertEquals("brandId", price.get().getBrandId());
-    assertEquals(Timestamp.from(now1).toLocalDateTime(), price.get().getEndDate());
-    assertEquals(Timestamp.from(now1).toLocalDateTime(), price.get().getInitialDate());
+    assertEquals(now1, price.get().getEndDate());
+    assertEquals(now1, price.get().getStartDate());
     assertEquals(Float.valueOf("2"), price.get().getFinalPrice());
     assertEquals("priceList1", price.get().getPriceList());
     assertEquals("productId", price.get().getProductId());
+    assertEquals(2, price.get().getPriority());
 
     try {
     } catch (Exception exc) {
@@ -134,28 +123,25 @@ class PriceServiceImplTest {
   void whenMoreThanOneRowMatchWithSamePriorityThenReturnTheFistRecoveredOne() {
     try {
 
-      List<PersistencePrice> persistencePrices = new ArrayList<PersistencePrice>();
-      Instant now = Instant.now();
+      List<Price> prices = new ArrayList<Price>();
+      LocalDateTime now = LocalDateTime.now();
 
-      persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("1")).brandId("brandId")
-          .startDate(Timestamp.from(now)).endDate(Timestamp.from(now)).priceList("priceList").productId("productId")
-          .priority(1).price(Float.valueOf("1")).curr("EUR").build());
+      prices.add(Price.builder().brandId("brandId").startDate(now).endDate(now).priceList("priceList")
+          .productId("productId").priority(1).finalPrice(Float.valueOf("1")).build());
 
-      persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("2")).brandId("brandId")
-          .startDate(Timestamp.from(now)).endDate(Timestamp.from(now)).priceList("priceList1").productId("productId")
-          .priority(1).price(Float.valueOf("2")).curr("EUR").build());
+      prices.add(Price.builder().brandId("brandId").startDate(now).endDate(now).priceList("priceList1")
+          .productId("productId").priority(1).finalPrice(Float.valueOf("2")).build());
 
-      when(priceRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
-          Mockito.anyString(), Mockito.anyString(), Mockito.any(Timestamp.class), Mockito.any(Timestamp.class)))
-              .thenReturn(persistencePrices);
+      when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
+          Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(prices);
 
-      Optional<Price> price = priceServiceImpl.getPriceInfoByDateProductAndBrand(LocalDateTime.now(), "productId",
+      Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
           "brandId");
       assertTrue(price.isPresent());
 
       assertEquals("brandId", price.get().getBrandId());
-      assertEquals(Timestamp.from(now).toLocalDateTime(), price.get().getEndDate());
-      assertEquals(Timestamp.from(now).toLocalDateTime(), price.get().getInitialDate());
+      assertEquals(now, price.get().getEndDate());
+      assertEquals(now, price.get().getStartDate());
       assertEquals(Float.valueOf("1"), price.get().getFinalPrice());
       assertEquals("priceList", price.get().getPriceList());
       assertEquals("productId", price.get().getProductId());
@@ -169,27 +155,26 @@ class PriceServiceImplTest {
   void whenOnlyOneRowMatchThenReturnTheMatchedElement() {
     try {
 
-      List<PersistencePrice> persistencePrices = new ArrayList<PersistencePrice>();
-      Instant now = Instant.now();
+      List<Price> prices = new ArrayList<Price>();
+      LocalDateTime now = LocalDateTime.now();
 
-      persistencePrices.add(PersistencePrice.builder().id(Long.valueOf("1")).brandId("brandId")
-          .startDate(Timestamp.from(now)).endDate(Timestamp.from(now)).priceList("priceList").productId("productId")
-          .priority(1).price(Float.valueOf("1")).curr("EUR").build());
+      prices.add(Price.builder().brandId("brandId").startDate(now).endDate(now).priceList("priceList")
+          .productId("productId").priority(1).finalPrice(Float.valueOf("1")).build());
 
-      when(priceRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
-          Mockito.anyString(), Mockito.anyString(), Mockito.any(Timestamp.class), Mockito.any(Timestamp.class)))
-              .thenReturn(persistencePrices);
+      when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
+          Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(prices);
 
-      Optional<Price> price = priceServiceImpl.getPriceInfoByDateProductAndBrand(LocalDateTime.now(), "productId",
+      Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
           "brandId");
       assertTrue(price.isPresent());
 
       assertEquals("brandId", price.get().getBrandId());
-      assertEquals(Timestamp.from(now).toLocalDateTime(), price.get().getEndDate());
-      assertEquals(Timestamp.from(now).toLocalDateTime(), price.get().getInitialDate());
+      assertEquals(now, price.get().getEndDate());
+      assertEquals(now, price.get().getStartDate());
       assertEquals(Float.valueOf("1"), price.get().getFinalPrice());
       assertEquals("priceList", price.get().getPriceList());
       assertEquals("productId", price.get().getProductId());
+      assertEquals(1, price.get().getPriority());
 
     } catch (Exception exc) {
       fail();

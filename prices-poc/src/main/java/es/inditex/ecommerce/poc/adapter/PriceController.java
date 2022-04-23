@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.adapters;
+package es.inditex.ecommerce.poc.adapter;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.inditex.ecommerce.poc.model.Price;
-import es.inditex.ecommerce.poc.ports.PriceService;
+import es.inditex.ecommerce.poc.domain.Price;
+import es.inditex.ecommerce.poc.port.PriceService;
 
 @RestController
 @RequestMapping("/v1/ecommerce/prices")
@@ -27,10 +27,7 @@ public class PriceController {
       @RequestParam("application_date") LocalDateTime applicationDate, @RequestParam("product_id") String productId,
       @RequestParam("brand_id") String brandId) {
 
-    Optional<Price> price = priceService.getPriceInfoByDateProductAndBrand(applicationDate, productId, brandId);
-    if (price.isPresent()) {
-      return ResponseEntity.ok(price.get());
-    }
-    return ResponseEntity.notFound().build();
+    Optional<Price> price = priceService.getApplicatedPriceByDateProductAndBrand(applicationDate, productId, brandId);
+    return price.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

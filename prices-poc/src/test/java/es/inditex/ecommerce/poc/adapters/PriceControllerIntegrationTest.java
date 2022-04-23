@@ -18,14 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import es.inditex.ecommerce.poc.model.Price;
+import es.inditex.ecommerce.poc.domain.Price;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 class PriceControllerIntegrationTest {
-
-  // TODO: Ver si puedo tener una configuracion para los test
 
   @Autowired
   private MockMvc mockMvc;

@@ -1,0 +1,2 @@
+*.class
+/prices-poc/target/**

@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.entities;
+package es.inditex.ecommerce.poc.entity;
 
 import java.sql.Timestamp;
 
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Table(name = "PRICES")
-public class PersistencePrice {
+public class PriceJpa {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", nullable = false)

@@ -71,8 +71,7 @@ class PriceRespositoryImplTest {
         .priceList("priceList2").priority(Integer.valueOf("2")).finalPrice(Float.valueOf("3")).build());
 
     // Then
-    List<Price> result = priceRespositoryImpl.findApplicatedPriceBy("productId", "brandId", LocalDateTime.now(),
-        LocalDateTime.now());
+    List<Price> result = priceRespositoryImpl.findApplicatedPriceBy("productId", "brandId", LocalDateTime.now());
 
     assertFalse(result.isEmpty());
     assertEquals(prices.size(), result.size());

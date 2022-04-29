@@ -24,8 +24,7 @@ public class PriceServiceImpl implements PriceService {
 
     Optional<Price> result = Optional.empty();
 
-    List<Price> priceListFromPersitence = priceRepository.findApplicatedPriceBy(productId, brandId, applicationDate,
-        applicationDate);
+    List<Price> priceListFromPersitence = priceRepository.findApplicatedPriceBy(productId, brandId, applicationDate);
     log.info("PersistencePriceList size: " + priceListFromPersitence.size(), this);
 
     if (!priceListFromPersitence.isEmpty()) {

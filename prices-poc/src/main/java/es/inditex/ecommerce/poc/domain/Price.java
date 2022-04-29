@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Price {
 
-  String productId;
-  String brandId;
-  String priceList;
-  Float finalPrice;
+  private String productId;
+  private String brandId;
+  private String priceList;
+  private Float finalPrice;
   private Integer priority;
-  LocalDateTime startDate;
-  LocalDateTime endDate;
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
 }

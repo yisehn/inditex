@@ -1,2 +1,6 @@
 *.class
 /prices-poc/target/**
+**/.classpath
+**/.project
+**/.settings/**
+**/bin/**

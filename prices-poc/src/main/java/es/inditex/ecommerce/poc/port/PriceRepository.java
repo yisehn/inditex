@@ -10,5 +10,5 @@ import es.inditex.ecommerce.poc.domain.Price;
 @Repository
 public interface PriceRepository {
 
-  List<Price> findApplicatedPriceBy(String productId, String brandId, LocalDateTime startDate, LocalDateTime endDate);
+  List<Price> findApplicatedPriceBy(String productId, String brandId, LocalDateTime appDate);
 }

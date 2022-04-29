@@ -21,12 +21,11 @@ public class PriceRespositoryImpl implements PriceRepository {
   final PriceJpaRepository priceJpaRepository;
 
   @Override
-  public List<Price> findApplicatedPriceBy(String productId, String brandId, LocalDateTime startDate,
-      LocalDateTime endDate) {
+  public List<Price> findApplicatedPriceBy(String productId, String brandId, LocalDateTime appDate) {
 
     List<PriceJpa> priceListFromDB = priceJpaRepository
         .findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId,
-            Timestamp.valueOf(startDate), Timestamp.valueOf(startDate));
+            Timestamp.valueOf(appDate), Timestamp.valueOf(appDate));
 
     return priceListFromDB.stream().map(x -> priceMapper.toDomain(x)).collect(Collectors.toList());
   }

@@ -36,7 +36,7 @@ class PriceServiceImplTest {
   void whenAnyRowMatchThenReturnAnEmptyValue() {
     try {
       when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
-          Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(Collections.emptyList());
+          Mockito.any(LocalDateTime.class))).thenReturn(Collections.emptyList());
 
       Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
           "brandId");
@@ -63,7 +63,7 @@ class PriceServiceImplTest {
         .priceList("priceList3").productId("productId").priority(1).finalPrice(Float.valueOf("3")).build());
 
     when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
-        Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(prices);
+        Mockito.any(LocalDateTime.class))).thenReturn(prices);
 
     Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
         "brandId");
@@ -99,7 +99,7 @@ class PriceServiceImplTest {
         .productId("productId").priority(2).finalPrice(Float.valueOf("3")).build());
 
     when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
-        Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(prices);
+        Mockito.any(LocalDateTime.class))).thenReturn(prices);
 
     Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
         "brandId");
@@ -133,7 +133,7 @@ class PriceServiceImplTest {
           .productId("productId").priority(1).finalPrice(Float.valueOf("2")).build());
 
       when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
-          Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(prices);
+          Mockito.any(LocalDateTime.class))).thenReturn(prices);
 
       Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
           "brandId");
@@ -162,7 +162,7 @@ class PriceServiceImplTest {
           .productId("productId").priority(1).finalPrice(Float.valueOf("1")).build());
 
       when(priceRepository.findApplicatedPriceBy(Mockito.anyString(), Mockito.anyString(),
-          Mockito.any(LocalDateTime.class), Mockito.any(LocalDateTime.class))).thenReturn(prices);
+          Mockito.any(LocalDateTime.class))).thenReturn(prices);
 
       Optional<Price> price = priceServiceImpl.getApplicatedPriceByDateProductAndBrand(LocalDateTime.now(), "productId",
           "brandId");

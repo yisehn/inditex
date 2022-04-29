@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.domain;
+package es.inditex.ecommerce.poc.domain.service;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -7,8 +7,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import es.inditex.ecommerce.poc.port.PriceRepository;
-import es.inditex.ecommerce.poc.port.PriceService;
+import es.inditex.ecommerce.poc.domain.model.Price;
+import es.inditex.ecommerce.poc.port.repository.PriceRepository;
+import es.inditex.ecommerce.poc.port.service.PriceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

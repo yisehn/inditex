@@ -25,8 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import es.inditex.ecommerce.poc.domain.Price;
-import es.inditex.ecommerce.poc.port.PriceService;
+import es.inditex.ecommerce.poc.domain.model.Price;
+import es.inditex.ecommerce.poc.port.service.PriceService;
 
 @SpringBootTest
 @AutoConfigureMockMvc

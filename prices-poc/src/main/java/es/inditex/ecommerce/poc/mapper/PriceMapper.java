@@ -3,8 +3,8 @@ package es.inditex.ecommerce.poc.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import es.inditex.ecommerce.poc.domain.Price;
-import es.inditex.ecommerce.poc.entity.PriceJpa;
+import es.inditex.ecommerce.poc.adapter.repository.entity.PriceJpa;
+import es.inditex.ecommerce.poc.domain.model.Price;
 
 @Mapper(componentModel = "spring")
 public interface PriceMapper {

@@ -1,11 +1,11 @@
-package es.inditex.ecommerce.poc.port;
+package es.inditex.ecommerce.poc.port.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import es.inditex.ecommerce.poc.domain.Price;
+import es.inditex.ecommerce.poc.domain.model.Price;
 
 @Repository
 public interface PriceRepository {

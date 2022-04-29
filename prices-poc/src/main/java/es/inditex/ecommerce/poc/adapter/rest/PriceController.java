@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.adapter;
+package es.inditex.ecommerce.poc.adapter.rest;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.inditex.ecommerce.poc.domain.Price;
-import es.inditex.ecommerce.poc.port.PriceService;
+import es.inditex.ecommerce.poc.domain.model.Price;
+import es.inditex.ecommerce.poc.port.service.PriceService;
 
 @RestController
 @RequestMapping("/v1/ecommerce/prices")

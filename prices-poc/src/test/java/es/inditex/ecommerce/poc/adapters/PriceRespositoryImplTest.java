@@ -17,10 +17,10 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import es.inditex.ecommerce.poc.adapter.PriceJpaRepository;
-import es.inditex.ecommerce.poc.adapter.PriceRespositoryImpl;
-import es.inditex.ecommerce.poc.domain.Price;
-import es.inditex.ecommerce.poc.entity.PriceJpa;
+import es.inditex.ecommerce.poc.adapter.repository.PriceJpaRepository;
+import es.inditex.ecommerce.poc.adapter.repository.PriceRespositoryImpl;
+import es.inditex.ecommerce.poc.adapter.repository.entity.PriceJpa;
+import es.inditex.ecommerce.poc.domain.model.Price;
 import es.inditex.ecommerce.poc.mapper.PriceMapper;
 
 @SpringBootTest

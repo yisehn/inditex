@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.entity;
+package es.inditex.ecommerce.poc.adapter.repository.entity;
 
 import java.sql.Timestamp;
 

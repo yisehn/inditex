@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.domain;
+package es.inditex.ecommerce.poc.domain.model;
 
 import java.time.LocalDateTime;
 

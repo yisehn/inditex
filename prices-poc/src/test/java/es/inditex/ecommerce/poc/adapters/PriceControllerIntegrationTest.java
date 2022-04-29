@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import es.inditex.ecommerce.poc.domain.Price;
+import es.inditex.ecommerce.poc.domain.model.Price;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")

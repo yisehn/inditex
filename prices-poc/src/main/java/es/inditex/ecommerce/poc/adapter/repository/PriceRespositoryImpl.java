@@ -1,4 +1,4 @@
-package es.inditex.ecommerce.poc.adapter;
+package es.inditex.ecommerce.poc.adapter.repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import es.inditex.ecommerce.poc.domain.Price;
-import es.inditex.ecommerce.poc.entity.PriceJpa;
+import es.inditex.ecommerce.poc.adapter.repository.entity.PriceJpa;
+import es.inditex.ecommerce.poc.domain.model.Price;
 import es.inditex.ecommerce.poc.mapper.PriceMapper;
-import es.inditex.ecommerce.poc.port.PriceRepository;
+import es.inditex.ecommerce.poc.port.repository.PriceRepository;
 import lombok.RequiredArgsConstructor;
 
 @Repository

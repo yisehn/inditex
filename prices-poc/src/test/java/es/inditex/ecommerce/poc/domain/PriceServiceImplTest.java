@@ -17,7 +17,9 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import es.inditex.ecommerce.poc.port.PriceRepository;
+import es.inditex.ecommerce.poc.domain.model.Price;
+import es.inditex.ecommerce.poc.domain.service.PriceServiceImpl;
+import es.inditex.ecommerce.poc.port.repository.PriceRepository;
 
 @SpringBootTest
 class PriceServiceImplTest {
